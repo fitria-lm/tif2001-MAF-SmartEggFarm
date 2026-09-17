@@ -4,9 +4,7 @@
 Proyek pengembangan perangkat lunak berbasis web untuk mata kuliah
 Software Development.
 
-## Identitas Kelompok
-**Mata Kuliah:** Software Development
-
+## Kelompok 10 - Software Development
 **Nama Kelompok:** MAF PROJECT
 ### Anggota
 1. Mea Inta Rohmah
