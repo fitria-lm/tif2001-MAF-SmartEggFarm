@@ -5,7 +5,7 @@ Proyek pengembangan perangkat lunak berbasis web untuk mata kuliah
 Software Development.
 
 ## Kelompok 10 - Software Development
-**Nama Kelompok:** MAF PROJECT
+**Nama Kelompok:** DevFarmX
 ### Anggota
 1. Mea Inta Rohmah
 2. Aryo Putra Firmansya
