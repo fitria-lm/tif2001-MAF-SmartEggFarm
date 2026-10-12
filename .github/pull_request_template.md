@@ -1,17 +1,19 @@
 ## Deskripsi
+<!-- Jelaskan fitur, perbaikan, atau konfigurasi apa yang dibuat -->
 
-Jelaskan perubahan yang dilakukan.
+## Related Issue
+<!-- Tulis nomor issue atau task dari GitHub Projects, contoh: Closes #1 -->
 
 ## Jenis Perubahan
+- [ ] Fitur Baru (Frontend / UI)
+- [ ] Fitur Baru (Backend / API)
+- [ ] Perbaikan Bug (Bug Fix)
+- [ ] Pengaturan CI/CD / Governance / Dokumentasi
 
-- [ ] Fitur baru
-- [ ] Perbaikan bug
-- [ ] Perubahan UI/UX
-- [ ] Dokumentasi
-- [ ] Lainnya
+## Checklist Review
+- [ ] Kode sudah diuji secara lokal dan berjalan tanpa error
+- [ ] Tidak ada file rahasia atau kredensial (.env, password, API key) yang terikut
+- [ ] Format kode rapi dan sesuai dengan standar tim
 
-## Checklist
-
-- [ ] Kode sudah diuji
-- [ ] Tidak ada error
-- [ ] Dokumentasi diperbarui jika diperlukan
+## Visual Evidence / Bukti
+<!-- Lampirkan screenshot UI, respon API dari Postman, atau log hasil test/terminal -->
