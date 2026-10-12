@@ -1,19 +1,34 @@
-## Deskripsi
-<!-- Jelaskan fitur, perbaikan, atau konfigurasi apa yang dibuat -->
+## Deskripsi Modul / Fitur
+<!-- Jelaskan singkat perubahan atau fitur yang dikerjakan pada sistem Smart Egg Farm -->
 
-## Related Issue
-<!-- Tulis nomor issue atau task dari GitHub Projects, contoh: Closes #1 -->
+## Related Issue / Task
+<!-- Tulis nomor issue dari GitHub Projects, contoh: Closes #4 -->
+
+## Scope Modul Smart Egg Farm
+Pilih modul yang terdampak oleh perubahan ini:
+- [ ] **Modul Autentikasi & Peran** (Login, Manajemen Role: Admin / Karyawan Kandang / Kasir)
+- [ ] **Modul Operasional Kandang** (Pencatatan Produksi Telur, Pakan, & Kondisi Ayam)
+- [ ] **Modul Transaksi Penjualan** (Kasir, Invoice, & Pembayaran)
+- [ ] **Modul Keuangan & Pengeluaran** (Pencatatan Biaya Operasional, Pakan, dll)
+- [ ] **Modul Dashboard & Laporan** (Grafik Laba/Rugi, Ringkasan Pendapatan)
+- [ ] **DevOps / CI-CD / Governance** (Konfigurasi Pipeline, Test Suite, Database Schema DDL)
 
 ## Jenis Perubahan
-- [ ] Fitur Baru (Frontend / UI)
-- [ ] Fitur Baru (Backend / API)
+- [ ] Fitur Baru (Frontend / UI Web)
+- [ ] Fitur Baru (Backend REST API / Controller / Route)
+- [ ] Skema Database (Tabel Baru / Migrasi DDL SQL)
 - [ ] Perbaikan Bug (Bug Fix)
-- [ ] Pengaturan CI/CD / Governance / Dokumentasi
+- [ ] Dokumentasi / Pipeline CI
 
-## Checklist Review
+## Checklist Quality & Security (QA/DevOps)
 - [ ] Kode sudah diuji secara lokal dan berjalan tanpa error
-- [ ] Tidak ada file rahasia atau kredensial (.env, password, API key) yang terikut
-- [ ] Format kode rapi dan sesuai dengan standar tim
+- [ ] Tidak ada berkas rahasia/kredensial terikut (`.env`, `JWT_SECRET`, database password)[cite: 10]
+- [ ] Validasi input data (seperti jumlah produksi/nominal uang) sudah diterapkan
+- [ ] Format kode rapi dan lulus aturan linter tim
 
-## Visual Evidence / Bukti
-<!-- Lampirkan screenshot UI, respon API dari Postman, atau log hasil test/terminal -->
+## Bukti Pengujian (Evidence)
+<!-- 
+  - Frontend: Lampirkan screenshot UI Form / Dashboard
+  - Backend: Lampirkan screenshot respon JSON dari Postman / Thunder Client
+  - DevOps: Lampirkan screenshot log terminal / unit test hijau 
+-->
