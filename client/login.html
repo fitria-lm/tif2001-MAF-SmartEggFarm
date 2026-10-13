@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In - ARYO PUTRA Farm (Smart Egg Farm)</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2C6B3F;
+            --light-green: #9CC094;
+            --bg-card: #FFFFFF;
+        }
+
+        body {
+            background-color: var(--primary-green);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        /* Layout Utama untuk Desktop (Split Screen) */
+        .desktop-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .brand-section {
+            flex: 1;
+            background-color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .form-section {
+            flex: 1;
+            background-color: var(--primary-green);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Kartu Form Login Berkelengkungan Khusus & Efek Lapis (Shadow/Backdrop) */
+        .login-card-wrapper {
+            background-color: rgba(156, 192, 148, 0.5); /* Warna hijau muda transparan di belakang */
+            padding: 15px;
+            border-radius: 35px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .login-card {
+            background-color: var(--bg-card);
+            border-radius: 25px;
+            padding: 35px 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .logo-img {
+            max-width: 280px;
+            height: auto;
+        }
+
+        .logo-mobile {
+            max-width: 150px;
+            height: auto;
+            margin-top: 25px;
+        }
+
+        /* Styling Input & Tombol */
+        .form-label {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            font-size: 0.95rem;
+        }
+
+        .form-control::placeholder {
+            color: #adb5bd;
+            font-style: italic;
+        }
+
+        .btn-custom-login {
+            background-color: var(--primary-green);
+            color: #FFFFFF;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            width: 100%;
+            border: none;
+            transition: background-color 0.2s;
+        }
+
+        .btn-custom-login:hover {
+            background-color: #235532;
+            color: #FFFFFF;
+        }
+
+        .btn-custom-qr {
+            background-color: #FFFFFF;
+            color: #000000;
+            border-radius: 10px;
+            padding: 10px;
+            font-weight: 600;
+            width: 100%;
+            border: 1px solid #ced4da;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .divider-text {
+            color: #888;
+            font-style: italic;
+            font-size: 0.9rem;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        /* Responsivitas untuk Tampilan Mobile (Layar < 768px) */
+        @media (max-width: 767.98px) {
+            .desktop-container {
+                flex-direction: column;
+            }
+            .brand-section {
+                display: none; /* Sembunyikan panel logo samping di mobile, diganti logo di bawah form */
+            }
+            .form-section {
+                width: 100%;
+                min-height: 100vh;
+                padding: 15px;
+                justify-content: flex-start;
+            }
+            .login-card-wrapper {
+                margin-top: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="desktop-container">
+        <!-- Panel Kiri: Logo Branding (Tampil di Desktop) -->
+        <div class="brand-section">
+            <div class="text-center">
+                <!-- Sesuaikan path gambar logo Anda nanti -->
+                <img src="assets/logo-aryoputra.png" alt="Aryo Putra Farm Logo" class="logo-img mb-3" onerror="this.src='https://via.placeholder.com/260x180/2C6B3F/FFFFFF?text=ARYO+PUTRA+Farm'">
+            </div>
+        </div>
+
+        <!-- Panel Kanan: Form Login -->
+        <div class="form-section">
+            <h2 class="text-white fw-bold mb-4">LOG IN</h2>
+            
+            <div class="login-card-wrapper">
+                <div class="login-card">
+                    <form>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" placeholder="Masukkan username....">
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Masukkan password....">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-custom-login mb-2">LOG IN</button>
+                        
+                        <div class="divider-text">atau</div>
+                        
+                        <button type="button" class="btn btn-custom-qr">
+                            <!-- SVG Icon QR Code Sederhana -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-qr-code" viewBox="0 0 16 16">
+                                <path d="M2 2h2v2H2V2Z"/>
+                                <path d="M6 0v6H0V0h6ZM5 1H1v4h4V1ZM4 12H2v2h2v-2Z"/>
+                                <path d="M6 10v6H0v-6h6Zm-5 1v4h4v-4H1Zm11-9h2v2h-2V2Z"/>
+                                <path d="M10 0v6h6V0h-6Zm5 1v4h4V1h-4ZM8 1V0h1v2H8v2H7V1h1Zm0 5H6v1h2V6Zm0 6h1v-1H8v1Zm-2 2v-2H1v2h5Zm2-2h2v1H8v-1Zm0-3h1v2H8v-2Zm3-3h2v1h-2V8Zm0 3h1v1h-1v-1Zm-2-2h1v1h-1V9Zm2 2h2v2h-2v-2Zm0 3h2v1h-2v-1Z"/>
+                            </svg>
+                            SCAN QR
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Logo khusus versi mobile di bawah form -->
+            <div class="d-md-none text-center">
+                <img src="assets/logo-aryoputra.png" alt="Aryo Putra Farm Logo" class="logo-mobile" onerror="this.src='https://via.placeholder.com/130x90/2C6B3F/FFFFFF?text=ARYO+PUTRA'">
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
