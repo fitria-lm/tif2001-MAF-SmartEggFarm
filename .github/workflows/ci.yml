@@ -11,6 +11,11 @@ jobs:
     name: Code Linting & Validation Check
     runs-on: ubuntu-latest
 
+    # Mengatur agar semua perintah dijalankan di dalam folder server/
+    defaults:
+      run:
+        working-directory: server
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -20,23 +25,20 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
+          # Memberitahu GitHub lokasi package-lock.json di folder server/
+          cache-dependency-path: server/package-lock.json
 
       - name: Install Dependencies
-        run: |
-          if [ -f package.json ]; then
-            npm ci || npm install
-          else
-            echo "package.json belum ada di root, melewati npm install."
-          fi
+        run: npm ci || npm install
 
       - name: Run Linter Check
         run: |
           if grep -q '"lint"' package.json 2>/dev/null; then
             npm run lint
           else
-            echo "Skrip lint belum dikonfigurasi di package.json, langkah dilewati."
+            echo "Skrip lint belum dikonfigurasi di package.json server, langkah dilewati."
           fi
 
       - name: Verify Code Structure & DDL Schema
         run: |
-          echo "Pemeriksaan struktur proyek Smart Egg Farm berhasil."
+          echo "Pemeriksaan struktur proyek Smart Egg Farm pada direktori server/ berhasil."
