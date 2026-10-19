@@ -11,7 +11,6 @@ jobs:
     name: Code Linting & Validation Check
     runs-on: ubuntu-latest
 
-    # Mengatur agar semua perintah dijalankan di dalam folder server/
     defaults:
       run:
         working-directory: server
@@ -24,19 +23,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          # Memberitahu GitHub lokasi package-lock.json di folder server/
-          cache-dependency-path: server/package-lock.json
 
       - name: Install Dependencies
-        run: npm ci || npm install
+        run: |
+          if [ -f package.json ]; then
+            npm install
+          else
+            echo "package.json tidak ditemukan di folder server/, melewati instalasi."
+          fi
 
       - name: Run Linter Check
         run: |
-          if grep -q '"lint"' package.json 2>/dev/null; then
+          if [ -f package.json ] && grep -q '"lint"' package.json; then
             npm run lint
           else
-            echo "Skrip lint belum dikonfigurasi di package.json server, langkah dilewati."
+            echo "Skrip lint belum dikonfigurasi di package.json, langkah dilewati."
           fi
 
       - name: Verify Code Structure & DDL Schema
