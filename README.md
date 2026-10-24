@@ -21,15 +21,14 @@ Sistem memungkinkan pengguna untuk:
 - Mencatat produksi telur
 - Mengelola transaksi penjualan
 - Mengelola data pengeluaran peternakan
-- Memantau pendapatan
-- Memantau laba peternakan
-- Melihat dashboard dan laporan
+- Melihat dashboard dan laporan pendapatan laba rugi peternakan
+- Fitur tambahan seperti kalkulator pakan.
 
 ## Target Pengguna
 ### 1. Pemilik / Admin Peternakan
 Memiliki akses untuk mengelola dan memantau seluruh data peternakan.
 ### 2. Karyawan Kandang
-Mengelola data operasional kandang seperti konsumsi pakan dan produksi telur.
+Menginputkan data panen dan mengakses kalkulator pakan.
 ### 3. Kasir
 Mengelola transaksi penjualan dan data pembayaran.
 
