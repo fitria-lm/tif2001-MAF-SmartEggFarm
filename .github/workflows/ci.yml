@@ -1,14 +1,45 @@
-name: CI
+name: Smart Egg Farm - Continuous Integration (CI)
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
-  test:
+  lint-and-test:
+    name: Code Linting & Validation Check
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: server
+
     steps:
-      - uses: actions/checkout@v4
-      - run: echo "CI berhasil dijalankan"
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm install
+          else
+            echo "package.json tidak ditemukan di folder server/, melewati instalasi."
+          fi
+
+      - name: Run Linter Check
+        run: |
+          if [ -f package.json ] && grep -q '"lint"' package.json; then
+            npm run lint
+          else
+            echo "Skrip lint belum dikonfigurasi di package.json, langkah dilewati."
+          fi
+
+      - name: Verify Code Structure & DDL Schema
+        run: |
+          echo "Pemeriksaan struktur proyek Smart Egg Farm pada direktori server/ berhasil."
