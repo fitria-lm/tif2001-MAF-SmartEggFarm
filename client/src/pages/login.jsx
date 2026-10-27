@@ -47,7 +47,10 @@ export default function Login() {
             onSubmit={handleSubmit}
             className="relative flex flex-1 flex-col rounded-t-[40px] bg-white px-8 py-10 lg:min-h-[28rem] lg:rounded-[40px]"
           >
-            <label htmlFor="username" className="mb-1 text-sm font-medium text-black">
+            <label
+              htmlFor="username"
+              className="mb-1 text-sm font-medium text-black"
+            >
               Username
             </label>
             <input
@@ -77,7 +80,9 @@ export default function Login() {
               LOG IN
             </button>
 
-            <p className="my-2 text-center text-sm italic text-gray-500">atau</p>
+            <p className="my-2 text-center text-sm italic text-gray-500">
+              atau
+            </p>
 
             {/* Placeholder saja, fitur Scan QR belum dibuat */}
             <button
