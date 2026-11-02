@@ -6,9 +6,12 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+
 jobs:
   lint-and-test:
-    name: Code Linting & Validation Check
+    name: Code Linting & Automated Unit Testing
     runs-on: ubuntu-latest
 
     defaults:
@@ -22,24 +25,15 @@ jobs:
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: server/package-lock.json
 
       - name: Install Dependencies
-        run: |
-          if [ -f package.json ]; then
-            npm install
-          else
-            echo "package.json tidak ditemukan di folder server/, melewati instalasi."
-          fi
+        run: npm ci
 
       - name: Run Linter Check
-        run: |
-          if [ -f package.json ] && grep -q '"lint"' package.json; then
-            npm run lint
-          else
-            echo "Skrip lint belum dikonfigurasi di package.json, langkah dilewati."
-          fi
+        run: npm run lint --if-present
 
-      - name: Verify Code Structure & DDL Schema
-        run: |
-          echo "Pemeriksaan struktur proyek Smart Egg Farm pada direktori server/ berhasil."
+      - name: Run Automated Unit Tests
+        run: npm test
