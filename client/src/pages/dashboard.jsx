@@ -2,7 +2,6 @@ import GreetingBanner from "../components/greeting_banner";
 import StatCard from "../components/stat_card";
 import { formatRupiah } from "../utils/format";
 
-// Data dummy, nanti diganti data dari API
 const data = {
   ringkasan: {
     pendapatanTotal: 5000000000,
