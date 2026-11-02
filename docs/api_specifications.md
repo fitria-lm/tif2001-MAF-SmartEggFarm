@@ -1,47 +1,62 @@
-# API Specifications — SmartEggFarm
+﻿# API Specifications - SmartEggFarm
+
+Base path: `/api/auth`. Semua endpoint memakai format JSON.
 
 ## 1. Register
 
 * **Endpoint:** `POST /api/auth/register`
-
 * **Fungsi:** Mendaftarkan pengguna baru.
-
 * **Request Body:**
 
   ```json
   {
-    "nama": "Mea",
-    "email": "mearhmh22gmail.com",
-    "password": "Mearhmh123"
+    "nama": "Budi",
+    "email": "budi@example.com",
+    "password": "password123"
   }
   ```
 
 * **Respons sukses:** `201 Created`
 
-* **Respons gagal:** `400 Bad Request` jika data tidak lengkap atau email sudah terdaftar.
+  ```json
+  { "message": "Registrasi berhasil" }
+  ```
+
+* **Respons gagal:**
+  * `400 Bad Request` jika nama, email, atau password kosong.
+  * `409 Conflict` jika email sudah terdaftar.
+  * `500 Internal Server Error` jika terjadi kesalahan pada server.
 
 ## 2. Login
 
 * **Endpoint:** `POST /api/auth/login`
-
-* **Fungsi:** Memverifikasi email dan password pengguna.
-
+* **Fungsi:** Memverifikasi email dan password pengguna, lalu menerbitkan token JWT.
 * **Request Body:**
 
   ```json
   {
-    "email": "mearhmh22@gmail.com",
-    "password": "Mearhmh123"
+    "email": "budi@example.com",
+    "password": "password123"
   }
   ```
 
-* **Respons sukses:** `200 OK`, berisi token JWT.
+* **Respons sukses:** `200 OK`
 
-* **Respons gagal:** `401 Unauthorized` jika kredensial tidak valid.
+  ```json
+  {
+    "message": "Login berhasil",
+    "token": "<token JWT>",
+    "user": { "id": "...", "nama": "Budi", "email": "budi@example.com" }
+  }
+  ```
+
+* **Respons gagal:**
+  * `400 Bad Request` jika email atau password kosong.
+  * `401 Unauthorized` jika email atau password salah.
+  * `500 Internal Server Error` jika terjadi kesalahan pada server.
 
 ## Catatan
 
-* Password disimpan dalam bentuk hash menggunakan bcryptjs.
+* Password disimpan dalam bentuk hash menggunakan bcryptjs (salt rounds 10).
 * Token JWT berlaku selama 24 jam.
-* Endpoint menggunakan format JSON.
-
+* Rute privat memakai header `Authorization: Bearer <token>` yang divalidasi oleh middleware `verifyToken`.
