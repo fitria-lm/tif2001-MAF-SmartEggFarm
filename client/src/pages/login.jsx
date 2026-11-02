@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { validateLogin } from "../utils/login_schema";
 import { useNavigate } from "react-router-dom";
 import { ScanQrCode } from "lucide-react";
 
@@ -20,8 +22,19 @@ function LogoPlaceholder({ className = "" }) {
 export default function Login() {
   const navigate = useNavigate();
 
+  const [values, setValues] = useState({ username: "", password: "" });
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const result = validateLogin(values);
+    setErrors(result.errors);
+    if (!result.success) return;
     // TODO: sambungkan ke backend (tahap autentikasi). Sementara langsung ke Beranda.
     navigate("/beranda");
   };
@@ -55,10 +68,17 @@ export default function Login() {
             </label>
             <input
               id="username"
+              name="username"
               type="text"
+              value={values.username}
+              onChange={handleChange}
+              aria-invalid={Boolean(errors.username)}
               placeholder="Masukkan username...."
               className={inputClass}
             />
+            {errors.username && (
+              <p className="mt-1 text-xs text-red-600">{errors.username}</p>
+            )}
 
             <label
               htmlFor="password"
@@ -68,11 +88,17 @@ export default function Login() {
             </label>
             <input
               id="password"
+              name="password"
               type="password"
+              value={values.password}
+              onChange={handleChange}
+              aria-invalid={Boolean(errors.password)}
               placeholder="Masukkan password..."
               className={inputClass}
             />
-
+            {errors.password && (
+              <p className="mt-1 text-xs text-red-600">{errors.password}</p>
+            )}
             <button
               type="submit"
               className="mt-8 w-full rounded-full bg-primary py-2 text-sm font-medium text-white hover:opacity-90"
