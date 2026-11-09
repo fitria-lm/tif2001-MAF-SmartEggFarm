@@ -5,33 +5,33 @@ const pool = require("../config/db");
 
 const register = async (req, res) => {
   try {
-    const { nama, email, password } = req.body;
+    const { nama, username, password } = req.body;
 
-    if (!nama || !email || !password) {
+    if (!nama || !username || !password) {
       return res.status(400).json({
-        message: "Nama, email, dan password wajib diisi"
+        message: "Nama, username, dan password wajib diisi"
       });
     }
 
-    const emailNormal = email.trim().toLowerCase();
+    const usernameNormal = username.trim().toLowerCase();
 
     const existingUser = await pool.query(
-      "SELECT id FROM users WHERE email = $1",
-      [emailNormal]
+      "SELECT id FROM users WHERE username = $1",
+      [usernameNormal]
     );
 
     if (existingUser.rows.length > 0) {
       return res.status(409).json({
-        message: "Email sudah terdaftar"
+        message: "Username sudah terdaftar"
       });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
 
     await pool.query(
-      `INSERT INTO users (nama, email, password_hash)
+      `INSERT INTO users (nama, username, password_hash)
        VALUES ($1, $2, $3)`,
-      [nama.trim(), emailNormal, passwordHash]
+      [nama.trim(), usernameNormal, passwordHash]
     );
 
     return res.status(201).json({
@@ -48,24 +48,24 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    if (!email || !password) {
+    if (!username || !password) {
       return res.status(400).json({
-        message: "Email dan password wajib diisi"
+        message: "Username dan password wajib diisi"
       });
     }
 
     const result = await pool.query(
-      "SELECT id, nama, email, password_hash FROM users WHERE email = $1",
-      [email.trim().toLowerCase()]
+      "SELECT id, nama, username, password_hash FROM users WHERE username = $1",
+      [username.trim().toLowerCase()]
     );
 
     const user = result.rows[0];
 
     if (!user || !(await bcrypt.compare(password, user.password_hash))) {
       return res.status(401).json({
-        message: "Email atau password salah"
+        message: "Username atau password salah"
       });
     }
 
@@ -74,7 +74,7 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, username: user.username },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
@@ -85,7 +85,7 @@ const login = async (req, res) => {
       user: {
         id: user.id,
         nama: user.nama,
-        email: user.email
+        username: user.username
       }
     });
   } catch (error) {

@@ -26,7 +26,7 @@ describe("Auth API", () => {
 
     const res = await request(app)
       .post("/api/auth/register")
-      .send({ nama: "Mea", email: "mea@test.com", password: "password123" });
+      .send({ nama: "Mea", username: "mea@test.com", password: "password123" });
 
     expect(res.statusCode).toBe(201);
     const hashTersimpan = pool.query.mock.calls[1][1][2];
@@ -37,27 +37,27 @@ describe("Auth API", () => {
   test("register: field kosong mengembalikan 400", async () => {
     const res = await request(app)
       .post("/api/auth/register")
-      .send({ email: "mea@test.com" });
+      .send({ username: "mea@test.com" });
     expect(res.statusCode).toBe(400);
   });
 
-  test("register: email sudah terdaftar mengembalikan 409", async () => {
+  test("register: username sudah terdaftar mengembalikan 409", async () => {
     pool.query.mockResolvedValueOnce({ rows: [{ id: "1" }] });
     const res = await request(app)
       .post("/api/auth/register")
-      .send({ nama: "Mea", email: "mea@test.com", password: "password123" });
+      .send({ nama: "Mea", username: "mea@test.com", password: "password123" });
     expect(res.statusCode).toBe(409);
   });
 
   test("login: berhasil menerbitkan token JWT berlaku 24 jam", async () => {
     const hash = await bcrypt.hash("password123", 10);
     pool.query.mockResolvedValueOnce({
-      rows: [{ id: "1", nama: "Mea", email: "mea@test.com", password_hash: hash }],
+      rows: [{ id: "1", nama: "Mea", username: "mea@test.com", password_hash: hash }],
     });
 
     const res = await request(app)
       .post("/api/auth/login")
-      .send({ email: "mea@test.com", password: "password123" });
+      .send({ username: "mea@test.com", password: "password123" });
 
     expect(res.statusCode).toBe(200);
     const decoded = jwt.verify(res.body.token, "test-secret");
@@ -68,40 +68,40 @@ describe("Auth API", () => {
   test("login: password salah mengembalikan 401", async () => {
     const hash = await bcrypt.hash("benar12345", 10);
     pool.query.mockResolvedValueOnce({
-      rows: [{ id: "1", email: "mea@test.com", password_hash: hash }],
+      rows: [{ id: "1", username: "mea@test.com", password_hash: hash }],
     });
     const res = await request(app)
       .post("/api/auth/login")
-      .send({ email: "mea@test.com", password: "salah12345" });
+      .send({ username: "mea@test.com", password: "salah12345" });
     expect(res.statusCode).toBe(401);
   });
 
-  test("login: email tidak terdaftar mengembalikan 401", async () => {
+  test("login: username tidak terdaftar mengembalikan 401", async () => {
     pool.query.mockResolvedValueOnce({ rows: [] });
     const res = await request(app)
       .post("/api/auth/login")
-      .send({ email: "x@test.com", password: "password123" });
+      .send({ username: "x@test.com", password: "password123" });
     expect(res.statusCode).toBe(401);
   });
 
   test("login: JWT_SECRET tidak ada mengembalikan 500", async () => {
     const hash = await bcrypt.hash("password123", 10);
     pool.query.mockResolvedValueOnce({
-      rows: [{ id: "1", email: "mea@test.com", password_hash: hash }],
+      rows: [{ id: "1", username: "mea@test.com", password_hash: hash }],
     });
     delete process.env.JWT_SECRET;
     const res = await request(app)
       .post("/api/auth/login")
-      .send({ email: "mea@test.com", password: "password123" });
+      .send({ username: "mea@test.com", password: "password123" });
     expect(res.statusCode).toBe(500);
   });
 });
 // Test suite dasar validasi autentikasi Smart Egg Farm
 describe('Auth Validation Suite', () => {
-  test('Validasi format email pengguna', () => {
-    const email = 'admin@smarteggfarm.com';
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    expect(emailRegex.test(email)).toBe(true);
+  test('Validasi format username pengguna', () => {
+    const username = 'admin@smarteggfarm.com';
+    const usernameRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    expect(usernameRegex.test(username)).toBe(true);
   });
 
   test('Validasi peran pengguna (Admin/Karyawan/Kasir)', () => {
