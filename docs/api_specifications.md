@@ -1,4 +1,4 @@
-﻿# API Specifications - SmartEggFarm
+# API Specifications - SmartEggFarm
 
 Base path: `/api/auth`. Semua endpoint memakai format JSON.
 
@@ -11,7 +11,7 @@ Base path: `/api/auth`. Semua endpoint memakai format JSON.
   ```json
   {
     "nama": "Budi",
-    "email": "budi@example.com",
+    "username": "budi",
     "password": "password123"
   }
   ```
@@ -23,19 +23,19 @@ Base path: `/api/auth`. Semua endpoint memakai format JSON.
   ```
 
 * **Respons gagal:**
-  * `400 Bad Request` jika nama, email, atau password kosong.
-  * `409 Conflict` jika email sudah terdaftar.
+  * `400 Bad Request` jika nama, username, atau password kosong.
+  * `409 Conflict` jika username sudah terdaftar.
   * `500 Internal Server Error` jika terjadi kesalahan pada server.
 
 ## 2. Login
 
 * **Endpoint:** `POST /api/auth/login`
-* **Fungsi:** Memverifikasi email dan password pengguna, lalu menerbitkan token JWT.
+* **Fungsi:** Memverifikasi username dan password pengguna, lalu menerbitkan token JWT.
 * **Request Body:**
 
   ```json
   {
-    "email": "budi@example.com",
+    "username": "budi",
     "password": "password123"
   }
   ```
@@ -46,13 +46,13 @@ Base path: `/api/auth`. Semua endpoint memakai format JSON.
   {
     "message": "Login berhasil",
     "token": "<token JWT>",
-    "user": { "id": "...", "nama": "Budi", "email": "budi@example.com" }
+    "user": { "id": "...", "nama": "Budi", "username": "budi" }
   }
   ```
 
 * **Respons gagal:**
-  * `400 Bad Request` jika email atau password kosong.
-  * `401 Unauthorized` jika email atau password salah.
+  * `400 Bad Request` jika username atau password kosong.
+  * `401 Unauthorized` jika username atau password salah.
   * `500 Internal Server Error` jika terjadi kesalahan pada server.
 
 ## Catatan
