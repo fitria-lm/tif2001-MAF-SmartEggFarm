@@ -22,9 +22,16 @@ Pilih modul yang terdampak oleh perubahan ini:
 
 ## Checklist Quality & Security (QA/DevOps)
 - [ ] Kode sudah diuji secara lokal dan berjalan tanpa error
-- [ ] Tidak ada berkas rahasia/kredensial terikut (`.env`, `JWT_SECRET`, database password)[cite: 10]
+- [ ] Tidak ada berkas rahasia/kredensial terikut (`.env`, `JWT_SECRET`, database password)
 - [ ] Validasi input data (seperti jumlah produksi/nominal uang) sudah diterapkan
 - [ ] Format kode rapi dan lulus aturan linter tim
+
+## Checklist Reviewer
+- [ ] Tidak ada kredensial atau variabel rahasia yang ditulis langsung di kode
+- [ ] Tidak ada penanda konflik merge (`<<<<<<<`, `=======`, `>>>>>>>`) tersisa di file
+- [ ] Penamaan fungsi dan variabel konsisten
+- [ ] Tidak ada potensi bug berat atau celah keamanan
+- [ ] CI (lint + test) hijau
 
 ## Bukti Pengujian (Evidence)
 <!-- 
