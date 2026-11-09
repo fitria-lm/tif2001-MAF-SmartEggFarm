@@ -4,9 +4,10 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node src/index.js",
     "lint": "eslint src",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "dev": "node --watch src/index.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
