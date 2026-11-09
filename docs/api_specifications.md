@@ -1,10 +1,10 @@
 # API Specifications - SmartEggFarm
 
-Base path: `/api/auth`. Semua endpoint memakai format JSON.
+Base path: `/api/v1/auth`. Semua endpoint memakai format JSON.
 
 ## 1. Register
 
-* **Endpoint:** `POST /api/auth/register`
+* **Endpoint:** `POST /api/v1/auth/register`
 * **Fungsi:** Mendaftarkan pengguna baru.
 * **Request Body:**
 
@@ -29,7 +29,7 @@ Base path: `/api/auth`. Semua endpoint memakai format JSON.
 
 ## 2. Login
 
-* **Endpoint:** `POST /api/auth/login`
+* **Endpoint:** `POST /api/v1/auth/login`
 * **Fungsi:** Memverifikasi username dan password pengguna, lalu menerbitkan token JWT.
 * **Request Body:**
 
