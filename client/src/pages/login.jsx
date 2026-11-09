@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+import { useState } from "react";
+import { validateLogin } from "../utils/login_schema";
+>>>>>>> f4f7288c07bbedde41ff062300341d7ab73ced3f
 import { useNavigate } from "react-router-dom";
 import { ScanQrCode } from "lucide-react";
 
@@ -20,8 +25,24 @@ function LogoPlaceholder({ className = "" }) {
 export default function Login() {
   const navigate = useNavigate();
 
+<<<<<<< HEAD
   const handleSubmit = (e) => {
     e.preventDefault();
+=======
+  const [values, setValues] = useState({ username: "", password: "" });
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const result = validateLogin(values);
+    setErrors(result.errors);
+    if (!result.success) return;
+>>>>>>> f4f7288c07bbedde41ff062300341d7ab73ced3f
     // TODO: sambungkan ke backend (tahap autentikasi). Sementara langsung ke Beranda.
     navigate("/beranda");
   };
@@ -47,15 +68,36 @@ export default function Login() {
             onSubmit={handleSubmit}
             className="relative flex flex-1 flex-col rounded-t-[40px] bg-white px-8 py-10 lg:min-h-[28rem] lg:rounded-[40px]"
           >
+<<<<<<< HEAD
             <label htmlFor="username" className="mb-1 text-sm font-medium text-black">
+=======
+            <label
+              htmlFor="username"
+              className="mb-1 text-sm font-medium text-black"
+            >
+>>>>>>> f4f7288c07bbedde41ff062300341d7ab73ced3f
               Username
             </label>
             <input
               id="username"
+<<<<<<< HEAD
               type="text"
               placeholder="Masukkan username...."
               className={inputClass}
             />
+=======
+              name="username"
+              type="text"
+              value={values.username}
+              onChange={handleChange}
+              aria-invalid={Boolean(errors.username)}
+              placeholder="Masukkan username...."
+              className={inputClass}
+            />
+            {errors.username && (
+              <p className="mt-1 text-xs text-red-600">{errors.username}</p>
+            )}
+>>>>>>> f4f7288c07bbedde41ff062300341d7ab73ced3f
 
             <label
               htmlFor="password"
@@ -65,11 +107,25 @@ export default function Login() {
             </label>
             <input
               id="password"
+<<<<<<< HEAD
               type="password"
               placeholder="Masukkan password..."
               className={inputClass}
             />
 
+=======
+              name="password"
+              type="password"
+              value={values.password}
+              onChange={handleChange}
+              aria-invalid={Boolean(errors.password)}
+              placeholder="Masukkan password..."
+              className={inputClass}
+            />
+            {errors.password && (
+              <p className="mt-1 text-xs text-red-600">{errors.password}</p>
+            )}
+>>>>>>> f4f7288c07bbedde41ff062300341d7ab73ced3f
             <button
               type="submit"
               className="mt-8 w-full rounded-full bg-primary py-2 text-sm font-medium text-white hover:opacity-90"
@@ -77,7 +133,13 @@ export default function Login() {
               LOG IN
             </button>
 
+<<<<<<< HEAD
             <p className="my-2 text-center text-sm italic text-gray-500">atau</p>
+=======
+            <p className="my-2 text-center text-sm italic text-gray-500">
+              atau
+            </p>
+>>>>>>> f4f7288c07bbedde41ff062300341d7ab73ced3f
 
             {/* Placeholder saja, fitur Scan QR belum dibuat */}
             <button
@@ -95,4 +157,8 @@ export default function Login() {
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f4f7288c07bbedde41ff062300341d7ab73ced3f

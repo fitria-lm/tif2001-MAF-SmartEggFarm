@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
+<<<<<<< HEAD
 import MainLayout from "./components/main_layout";
 import Dashboard from "./pages/dashboard";
 import Panen from "./pages/Kandang/panen";
@@ -8,12 +9,15 @@ import DataPenjualan from "./pages/Penjualan/data_penjualan";
 import SettingHarga from "./pages/Penjualan/setting_harga";
 import Operasional from "./pages/operasional";
 import NotFound from "./pages/notfound";
+=======
+>>>>>>> f4f7288c07bbedde41ff062300341d7ab73ced3f
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
+<<<<<<< HEAD
 
       {/* Semua halaman di dalam sini memakai sidebar */}
       <Route element={<MainLayout />}>
@@ -34,3 +38,8 @@ export default function App() {
     </Routes>
   );
 }
+=======
+    </Routes>
+  );
+}
+>>>>>>> f4f7288c07bbedde41ff062300341d7ab73ced3f
