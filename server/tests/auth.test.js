@@ -25,7 +25,7 @@ describe("Auth API", () => {
       .mockResolvedValueOnce({ rows: [] });
 
     const res = await request(app)
-      .post("/api/auth/register")
+      .post("/api/v1/auth/register")
       .send({ nama: "Mea", username: "mea@test.com", password: "password123" });
 
     expect(res.statusCode).toBe(201);
@@ -36,7 +36,7 @@ describe("Auth API", () => {
 
   test("register: field kosong mengembalikan 400", async () => {
     const res = await request(app)
-      .post("/api/auth/register")
+      .post("/api/v1/auth/register")
       .send({ username: "mea@test.com" });
     expect(res.statusCode).toBe(400);
   });
@@ -44,7 +44,7 @@ describe("Auth API", () => {
   test("register: username sudah terdaftar mengembalikan 409", async () => {
     pool.query.mockResolvedValueOnce({ rows: [{ id: "1" }] });
     const res = await request(app)
-      .post("/api/auth/register")
+      .post("/api/v1/auth/register")
       .send({ nama: "Mea", username: "mea@test.com", password: "password123" });
     expect(res.statusCode).toBe(409);
   });
@@ -56,7 +56,7 @@ describe("Auth API", () => {
     });
 
     const res = await request(app)
-      .post("/api/auth/login")
+      .post("/api/v1/auth/login")
       .send({ username: "mea@test.com", password: "password123" });
 
     expect(res.statusCode).toBe(200);
@@ -71,7 +71,7 @@ describe("Auth API", () => {
       rows: [{ id: "1", username: "mea@test.com", password_hash: hash }],
     });
     const res = await request(app)
-      .post("/api/auth/login")
+      .post("/api/v1/auth/login")
       .send({ username: "mea@test.com", password: "salah12345" });
     expect(res.statusCode).toBe(401);
   });
@@ -79,7 +79,7 @@ describe("Auth API", () => {
   test("login: username tidak terdaftar mengembalikan 401", async () => {
     pool.query.mockResolvedValueOnce({ rows: [] });
     const res = await request(app)
-      .post("/api/auth/login")
+      .post("/api/v1/auth/login")
       .send({ username: "x@test.com", password: "password123" });
     expect(res.statusCode).toBe(401);
   });
@@ -91,7 +91,7 @@ describe("Auth API", () => {
     });
     delete process.env.JWT_SECRET;
     const res = await request(app)
-      .post("/api/auth/login")
+      .post("/api/v1/auth/login")
       .send({ username: "mea@test.com", password: "password123" });
     expect(res.statusCode).toBe(500);
   });

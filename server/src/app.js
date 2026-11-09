@@ -12,6 +12,6 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api/auth", authRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 module.exports = app;
