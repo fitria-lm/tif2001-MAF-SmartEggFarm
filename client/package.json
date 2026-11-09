@@ -7,10 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+<<<<<<< HEAD
+    "preview": "vite preview"
+=======
     "test": "vitest run",
     "preview": "vite preview",
     "format": "prettier --write src",
     "format:check": "prettier --check src"
+>>>>>>> f4f7288c07bbedde41ff062300341d7ab73ced3f
   },
   "dependencies": {
     "@hookform/resolvers": "^6.0.0",
@@ -33,8 +37,12 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.13.0",
+<<<<<<< HEAD
+    "vite": "^8.3.4"
+=======
     "prettier": "3.9.10",
     "vite": "^8.3.4",
     "vitest": "^5.0.5"
+>>>>>>> f4f7288c07bbedde41ff062300341d7ab73ced3f
   }
 }
