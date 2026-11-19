@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 // Sementara dummy, nanti diganti data kandang dari API
-export const KANDANG_OPTIONS = ["Kandang A", "Kandang B", "Kandang C"];
+const KANDANG_OPTIONS = ["Kandang A", "Kandang B", "Kandang C"];
 
 const schema = z.object({
   tanggal: z.string().min(1, "Tanggal wajib diisi"),
