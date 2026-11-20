@@ -9,20 +9,29 @@ const menus = [
     to: "/kandang",
     icon: Warehouse,
     children: [
+      { label: "Data Kandang", to: "/kandang/data-kandang" },
       { label: "Panen", to: "/kandang/panen" },
-      { label: "Kalkulator Pakan", to: "/kandang/kalkulator-pakan" },
+      { label: "Pakan", to: "/kandang/pakan" },
     ],
   },
   {
-    label: "Penjualan",
-    to: "/penjualan",
+    label: "Pemasaran",
+    to: "/pemasaran",
     icon: BriefcaseBusiness,
     children: [
-      { label: "Data Penjualan", to: "/penjualan/data-penjualan" },
-      { label: "Setting Harga", to: "/penjualan/setting-harga" },
+      { label: "Penjualan Telur", to: "/pemasaran/penjualan-telur" },
+      { label: "Penjualan Lainnya", to: "/pemasaran/penjualan-lainnya" },
     ],
   },
-  { label: "Operasional", to: "/operasional", icon: UserSearch },
+  {
+    label: "Operasional",
+    to: "/operasional",
+    icon: UserSearch,
+    children: [
+      { label: "Pengeluaran", to: "/operasional/pengeluaran" },
+      { label: "Gaji Karyawan", to: "/operasional/gaji-karyawan" },
+    ],
+  },
 ];
 
 const pillClass = (active) =>
