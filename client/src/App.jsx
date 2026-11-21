@@ -5,7 +5,6 @@ import Dashboard from "./pages/dashboard";
 import DataKandang from "./pages/kandang/data_kandang";
 import Panen from "./pages/kandang/panen";
 import Pakan from "./pages/kandang/pakan";
-import KalkulatorPakan from "./pages/kandang/kalkulator_pakan";
 import PenjualanTelur from "./pages/pemasaran/penjualan_telur";
 import SettingHarga from "./pages/pemasaran/setting_harga";
 import PenjualanLainnya from "./pages/pemasaran/penjualan_lainnya";
@@ -27,13 +26,10 @@ export default function App() {
         <Route path="/kandang/data-kandang" element={<DataKandang />} />
         <Route path="/kandang/panen" element={<Panen />} />
         <Route path="/kandang/pakan" element={<Pakan />} />
-        {/* Sementara: nanti kalkulator jadi tab di halaman Pakan */}
-        <Route path="/kandang/pakan/kalkulator" element={<KalkulatorPakan />} />
         <Route
           path="/kandang/kalkulator-pakan"
-          element={<Navigate to="/kandang/pakan/kalkulator" replace />}
+          element={<Navigate to="/kandang/pakan?tab=kalkulator" replace />}
         />
-
         <Route path="/pemasaran" element={<Navigate to="/pemasaran/penjualan-telur" replace />} />
         <Route path="/pemasaran/penjualan-telur" element={<PenjualanTelur />} />
         {/* Sementara: nanti Setting Harga jadi tab di Penjualan Telur */}
