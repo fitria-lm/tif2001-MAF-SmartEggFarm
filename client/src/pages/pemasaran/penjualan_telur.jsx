@@ -1,15 +1,21 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Tabs from "../../components/tabs";
 import OrderTelurForm from "../../components/order_telur_form";
+import AntreanOrder from "../../components/antrean_order";
 import {
   antreanAwal,
   selesaiAwal,
   buatIdOrder,
+  selesaikanOrder,
 } from "../../utils/penjualan_telur";
 
+const hariIni = () => new Date().toLocaleDateString("sv-SE");
+
 export default function PenjualanTelur() {
+  const [, setSearchParams] = useSearchParams();
   const [antrean, setAntrean] = useState(antreanAwal);
-  const [selesai] = useState(selesaiAwal);
+  const [selesai, setSelesai] = useState(selesaiAwal);
   const [orderEdit, setOrderEdit] = useState(null);
 
   function simpanOrder(data) {
@@ -17,6 +23,7 @@ export default function PenjualanTelur() {
       setAntrean((lama) =>
         lama.map((o) => (o.id === data.id ? { ...o, ...data } : o)),
       );
+      setSearchParams({ tab: "antrean" });
     } else {
       setAntrean((lama) => [
         { ...data, id: buatIdOrder([...lama, ...selesai]) },
@@ -24,6 +31,23 @@ export default function PenjualanTelur() {
       ]);
     }
     setOrderEdit(null);
+  }
+
+  function mulaiEdit(order) {
+    setOrderEdit(order);
+    setSearchParams({ tab: "order" });
+  }
+
+  function hapusOrder(id) {
+    setAntrean((lama) => lama.filter((o) => o.id !== id));
+    if (orderEdit?.id === id) setOrderEdit(null);
+  }
+
+  function selesaikan(id) {
+    const hasil = selesaikanOrder(antrean, selesai, id, hariIni());
+    setAntrean(hasil.antrean);
+    setSelesai(hasil.selesai);
+    if (orderEdit?.id === id) setOrderEdit(null);
   }
 
   const tabs = [
@@ -42,7 +66,14 @@ export default function PenjualanTelur() {
     {
       key: "antrean",
       label: "Antrean",
-      content: <p>{antrean.length} order dalam antrean (tabel menyusul).</p>,
+      content: (
+        <AntreanOrder
+          antrean={antrean}
+          onSelesaikan={selesaikan}
+          onEdit={mulaiEdit}
+          onHapus={hapusOrder}
+        />
+      ),
     },
     {
       key: "selesai",
