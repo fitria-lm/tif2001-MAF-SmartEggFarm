@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import Tabs from "../../components/tabs";
 import OrderTelurForm from "../../components/order_telur_form";
 import AntreanOrder from "../../components/antrean_order";
+import SelesaiOrder from "../../components/selesai_order";
 import {
   antreanAwal,
   selesaiAwal,
@@ -78,7 +79,7 @@ export default function PenjualanTelur() {
     {
       key: "selesai",
       label: "Data Order Selesai",
-      content: <p>{selesai.length} order selesai (tabel menyusul).</p>,
+      content: <SelesaiOrder selesai={selesai} />,
     },
   ];
 
