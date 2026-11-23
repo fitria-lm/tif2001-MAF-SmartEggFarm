@@ -10,6 +10,7 @@ import {
   urutkanTerbaru,
   totalPengeluaran,
   totalPerKategori,
+  stokMasukPerBahan,
 } from "./pengeluaran";
 
 const formPakanValid = {
@@ -188,5 +189,25 @@ describe("totalPerKategori", () => {
     expect(hasil["Listrik/Air"]).toBe(420000);
     expect(hasil["Perawatan Kandang"]).toBe(600000);
     expect(hasil["Lainnya"]).toBe(0);
+  });
+});
+describe("stokMasukPerBahan", () => {
+  it("menjumlahkan Kg pakan per bahan dari kategori Pakan saja", () => {
+    expect(stokMasukPerBahan(pengeluaranAwal)).toEqual({
+      Jagung: 300,
+      Konsentrat: 100,
+    });
+  });
+
+  it("menggabungkan beberapa pembelian bahan yang sama", () => {
+    const daftar = [
+      ...pengeluaranAwal,
+      { id: 6, tanggal: "2026-11-20", kategori: "Pakan", keterangan: "Beli jagung", nominal: 500000, bahan: "Jagung", jumlahKg: 100 },
+    ];
+    expect(stokMasukPerBahan(daftar).Jagung).toBe(400);
+  });
+
+  it("objek kosong jika tidak ada pengeluaran pakan", () => {
+    expect(stokMasukPerBahan([])).toEqual({});
   });
 });

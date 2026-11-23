@@ -133,3 +133,12 @@ export function totalPerKategori(daftar) {
   });
   return hasil;
 }
+
+export function stokMasukPerBahan(daftar) {
+  const hasil = {};
+  daftar.forEach((item) => {
+    if (!isPakan(item.kategori)) return;
+    hasil[item.bahan] = (hasil[item.bahan] ?? 0) + item.jumlahKg;
+  });
+  return hasil;
+}
