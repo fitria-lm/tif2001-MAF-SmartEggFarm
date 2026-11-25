@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Menu } from "lucide-react";
 import Sidebar from "./sidebar";
+import StokProvider from "../context/stok_provider";
 
 export default function MainLayout() {
   const [open, setOpen] = useState(false);
@@ -27,7 +28,9 @@ export default function MainLayout() {
       <Sidebar open={open} onClose={() => setOpen(false)} />
 
       <main className="p-4 md:p-6">
-        <Outlet />
+        <StokProvider>
+          <Outlet />
+        </StokProvider>
       </main>
     </div>
   );
