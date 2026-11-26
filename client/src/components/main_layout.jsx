@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Menu } from "lucide-react";
 import Sidebar from "./sidebar";
+import PengeluaranProvider from "../context/pengeluaran_provider";
 import StokProvider from "../context/stok_provider";
 
 export default function MainLayout() {
@@ -24,10 +25,11 @@ export default function MainLayout() {
           LOGO
         </div>
       </header>
-
       <Sidebar open={open} onClose={() => setOpen(false)} />
-
       <main className="p-4 md:p-6">
+        <PengeluaranProvider>
+          <Outlet />
+        </PengeluaranProvider>
         <StokProvider>
           <Outlet />
         </StokProvider>

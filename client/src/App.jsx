@@ -8,7 +8,6 @@ import Pakan from "./pages/kandang/pakan";
 import PenjualanTelur from "./pages/pemasaran/penjualan_telur";
 import PenjualanLainnya from "./pages/pemasaran/penjualan_lainnya";
 import Pengeluaran from "./pages/operasional/pengeluaran";
-import GajiKaryawan from "./pages/operasional/gaji_karyawan";
 import NotFound from "./pages/notfound";
 
 export default function App() {
@@ -51,7 +50,6 @@ export default function App() {
           element={<Navigate to="/operasional/pengeluaran" replace />}
         />
         <Route path="/operasional/pengeluaran" element={<Pengeluaran />} />
-        <Route path="/operasional/gaji-karyawan" element={<GajiKaryawan />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

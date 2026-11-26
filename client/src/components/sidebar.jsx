@@ -22,15 +22,10 @@ const menus = [
       { label: "Penjualan Telur", to: "/pemasaran/penjualan-telur" },
       { label: "Penjualan Lainnya", to: "/pemasaran/penjualan-lainnya" },
     ],
-  },
-  {
+  },  {
     label: "Operasional",
-    to: "/operasional",
+    to: "/operasional/pengeluaran",
     icon: UserSearch,
-    children: [
-      { label: "Pengeluaran", to: "/operasional/pengeluaran" },
-      { label: "Gaji Karyawan", to: "/operasional/gaji-karyawan" },
-    ],
   },
 ];
 
