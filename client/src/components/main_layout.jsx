@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Menu } from "lucide-react";
 import Sidebar from "./sidebar";
 import PengeluaranProvider from "../context/pengeluaran_provider";
+import StokProvider from "../context/stok_provider";
 
 export default function MainLayout() {
   const [open, setOpen] = useState(false);
@@ -29,6 +30,9 @@ export default function MainLayout() {
         <PengeluaranProvider>
           <Outlet />
         </PengeluaranProvider>
+        <StokProvider>
+          <Outlet />
+        </StokProvider>
       </main>
     </div>
   );

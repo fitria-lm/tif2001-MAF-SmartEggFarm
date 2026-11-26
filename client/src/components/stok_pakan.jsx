@@ -2,11 +2,11 @@ import { useMemo, useRef, useState } from "react";
 import {
   BAHAN_PAKAN,
   BATAS_MENIPIS_AWAL,
-  stokMasukAwal,
-  hitungStok,
   statusStok,
+  stokMasukAman,
   totalBerat,
 } from "../utils/stok_pakan";
+import { useStok } from "../context/stok_context";
 
 const GAYA_STATUS = {
   aman: { label: "Aman", kelas: "bg-[#ACC695]/40 text-primary" },
@@ -29,14 +29,13 @@ const formatTanggal = (iso) =>
 const formatKg = (angka) => `${Number(angka).toLocaleString("id-ID")} Kg`;
 
 export default function StokPakan() {
-  const [stokMasuk, setStokMasuk] = useState(stokMasukAwal);
+  // stokMasuk, transaksi, dan stokTersedia dipakai bersama halaman lain lewat context
+  const { stokMasuk, setStokMasuk, transaksi, stokTersedia: stok } = useStok();
   const [batas, setBatas] = useState(BATAS_MENIPIS_AWAL);
   const [form, setForm] = useState(formKosong);
   const [editId, setEditId] = useState(null);
   const [error, setError] = useState("");
   const formRef = useRef(null);
-
-  const stok = useMemo(() => hitungStok(stokMasuk), [stokMasuk]);
 
   const dataUrut = useMemo(
     () => [...stokMasuk].sort((a, b) => b.tanggal.localeCompare(a.tanggal)),
@@ -80,16 +79,24 @@ export default function StokPakan() {
       return;
     }
 
+    let daftarBaru;
     if (editId === null) {
       const idBaru = stokMasuk.reduce((maks, item) => Math.max(maks, item.id), 0) + 1;
-      setStokMasuk((prev) => [...prev, { id: idBaru, tanggal: form.tanggal, bahan }]);
+      daftarBaru = [...stokMasuk, { id: idBaru, tanggal: form.tanggal, bahan }];
     } else {
-      setStokMasuk((prev) =>
-        prev.map((item) =>
-          item.id === editId ? { ...item, tanggal: form.tanggal, bahan } : item,
-        ),
+      daftarBaru = stokMasuk.map((item) =>
+        item.id === editId ? { ...item, tanggal: form.tanggal, bahan } : item,
       );
     }
+
+    if (!stokMasukAman(daftarBaru, transaksi)) {
+      setError(
+        "Perubahan ini membuat stok lebih kecil dari jumlah yang sudah terjual.",
+      );
+      return;
+    }
+
+    setStokMasuk(daftarBaru);
     resetForm();
   };
 
@@ -106,10 +113,17 @@ export default function StokPakan() {
   };
 
   const hapus = (item) => {
+    const daftarBaru = stokMasuk.filter((x) => x.id !== item.id);
+    if (!stokMasukAman(daftarBaru, transaksi)) {
+      window.alert(
+        "Data ini tidak bisa dihapus karena stoknya sudah terjual. Hapus dulu transaksi penjualannya.",
+      );
+      return;
+    }
     if (!window.confirm(`Hapus data stok masuk tanggal ${formatTanggal(item.tanggal)}?`)) {
       return;
     }
-    setStokMasuk((prev) => prev.filter((x) => x.id !== item.id));
+    setStokMasuk(daftarBaru);
     if (editId === item.id) resetForm();
   };
 

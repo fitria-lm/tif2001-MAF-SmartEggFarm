@@ -1,12 +1,23 @@
-name: CD
+# PLACEHOLDER — Continuous Deployment belum diimplementasikan.
+# File ini hanya menyediakan kerangka workflow agar struktur .github/workflows/
+# siap untuk Sprint 2. Tidak melakukan deploy apa pun.
+# Lihat: docs/ci_architecture.md → bagian "Planned (Sprint 2)".
+name: CD (Placeholder)
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
+
+permissions:
+  contents: read
 
 jobs:
   deploy:
+    name: Deploy Placeholder (no-op)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: echo "CD berhasil dijalankan"
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Placeholder Step
+        run: echo "PLACEHOLDER: CD belum diimplementasikan. Deploy menyusul Sprint 2."
