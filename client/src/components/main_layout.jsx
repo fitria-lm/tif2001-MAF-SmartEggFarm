@@ -28,11 +28,10 @@ export default function MainLayout() {
       <Sidebar open={open} onClose={() => setOpen(false)} />
       <main className="p-4 md:p-6">
         <PengeluaranProvider>
-          <Outlet />
+          <StokProvider>
+            <Outlet />
+          </StokProvider>
         </PengeluaranProvider>
-        <StokProvider>
-          <Outlet />
-        </StokProvider>
       </main>
     </div>
   );

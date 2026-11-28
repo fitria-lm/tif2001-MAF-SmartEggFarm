@@ -1,25 +1,22 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useState } from "react";
+import {
+  buatBarisKosong,
+  formatIdPanen,
+  panenKeBaris,
+  validasiPanen,
+} from "../utils/panen";
 
 // Sementara dummy, nanti diganti data kandang dari API
 const KANDANG_OPTIONS = ["Kandang A", "Kandang B", "Kandang C"];
 
-const schema = z.object({
-  tanggal: z.string().min(1, "Tanggal wajib diisi"),
-  jumlahTelur: z.coerce
-    .number()
-    .int("Harus bilangan bulat")
-    .positive("Jumlah telur harus lebih dari 0"),
-  beratPanen: z.coerce.number().positive("Berat panen harus lebih dari 0"),
-  kandang: z.string().min(1, "Kandang wajib dipilih"),
-});
-
-const EMPTY = { tanggal: "", jumlahTelur: "", beratPanen: "", kandang: "" };
-
 const inputClass =
   "w-full rounded-full border border-[#3E7642] bg-white px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[#ACC695]";
+
+const formatAngka = (n, desimal = 0) =>
+  n.toLocaleString("id-ID", {
+    minimumFractionDigits: desimal,
+    maximumFractionDigits: desimal,
+  });
 
 function Field({ label, error, children }) {
   return (
@@ -31,32 +28,44 @@ function Field({ label, error, children }) {
   );
 }
 
+// Catatan: form ini mengisi state awalnya dari prop `editing`.
+// Halaman harus memberi `key` yang berubah saat mode edit berganti
+// (lihat pages/kandang/panen.jsx) supaya form dibuat ulang.
 export default function PanenForm({ editing, onSave, onCancelEdit, onLihatData }) {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({ resolver: zodResolver(schema), defaultValues: EMPTY });
+  const [tanggal, setTanggal] = useState(editing ? editing.tanggal : "");
+  const [kandang, setKandang] = useState(editing ? editing.kandang : "");
+  const [baris, setBaris] = useState(
+    editing ? panenKeBaris(editing) : buatBarisKosong()
+  );
+  const [errors, setErrors] = useState({ baris: {} });
 
-  // Saat tombol Edit ditekan, isi form dengan data yang dipilih
-  useEffect(() => {
-    reset(
-      editing
-        ? {
-            tanggal: editing.tanggal,
-            jumlahTelur: editing.jumlahTelur,
-            beratPanen: editing.beratPanen,
-            kandang: editing.kandang,
-          }
-        : EMPTY
+  const ubahBaris = (tipeTelur, field, value) => {
+    setBaris((prev) =>
+      prev.map((b) => (b.tipeTelur === tipeTelur ? { ...b, [field]: value } : b))
     );
-  }, [editing, reset]);
+  };
 
-  const submit = handleSubmit((values) => {
-    onSave(values);
-    reset(EMPTY);
-  });
+  // Total otomatis, hanya sebagai bantuan melihat angka sebelum disimpan
+  const totalButir = baris.reduce((s, b) => s + (Number(b.jumlahTelur) || 0), 0);
+  const totalBerat =
+    Math.round(baris.reduce((s, b) => s + (Number(b.beratPanenKg) || 0), 0) * 10) /
+    10;
+
+  const submit = (e) => {
+    e.preventDefault();
+    const hasil = validasiPanen({ tanggal, kandang, baris });
+    setErrors(hasil.errors);
+    if (!hasil.valid) return;
+
+    onSave({ tanggal, kandang, baris });
+
+    if (!editing) {
+      setTanggal("");
+      setKandang("");
+      setBaris(buatBarisKosong());
+      setErrors({ baris: {} });
+    }
+  };
 
   return (
     <form
@@ -67,7 +76,7 @@ export default function PanenForm({ editing, onSave, onCancelEdit, onLihatData }
       {editing && (
         <Field label="ID Panen">
           <input
-            value={editing.id}
+            value={formatIdPanen(editing.idPanen)}
             readOnly
             disabled
             className={`${inputClass} border-gray-300 bg-gray-100 text-gray-500`}
@@ -75,33 +84,21 @@ export default function PanenForm({ editing, onSave, onCancelEdit, onLihatData }
         </Field>
       )}
 
-      <Field label="Tanggal" error={errors.tanggal?.message}>
-        <input type="date" className={inputClass} {...register("tanggal")} />
-      </Field>
-
-      <Field label="Jumlah Telur" error={errors.jumlahTelur?.message}>
+      <Field label="Tanggal" error={errors.tanggal}>
         <input
-          type="number"
-          inputMode="numeric"
-          placeholder="Butir"
+          type="date"
+          value={tanggal}
+          onChange={(e) => setTanggal(e.target.value)}
           className={inputClass}
-          {...register("jumlahTelur")}
         />
       </Field>
 
-      <Field label="Berat Panen" error={errors.beratPanen?.message}>
-        <input
-          type="number"
-          step="0.1"
-          inputMode="decimal"
-          placeholder="Kg"
+      <Field label="Kandang" error={errors.kandang}>
+        <select
+          value={kandang}
+          onChange={(e) => setKandang(e.target.value)}
           className={inputClass}
-          {...register("beratPanen")}
-        />
-      </Field>
-
-      <Field label="Kandang" error={errors.kandang?.message}>
-        <select className={inputClass} {...register("kandang")}>
+        >
           <option value="">Pilih kandang</option>
           {KANDANG_OPTIONS.map((k) => (
             <option key={k} value={k}>
@@ -110,6 +107,73 @@ export default function PanenForm({ editing, onSave, onCancelEdit, onLihatData }
           ))}
         </select>
       </Field>
+
+      <div>
+        <p className="mb-2 text-xs font-medium text-black">Rincian per Grade</p>
+        <div className="space-y-2">
+          {baris.map((b) => {
+            const err = errors.baris?.[b.tipeTelur];
+            return (
+              <div
+                key={b.tipeTelur}
+                className="rounded-2xl border border-[#ACC695] p-3"
+              >
+                <p className="mb-2 text-xs font-semibold text-[#3E7642]">
+                  Grade {b.tipeTelur}
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      min="0"
+                      placeholder="Butir"
+                      aria-label={`Jumlah butir grade ${b.tipeTelur}`}
+                      value={b.jumlahTelur}
+                      onChange={(e) =>
+                        ubahBaris(b.tipeTelur, "jumlahTelur", e.target.value)
+                      }
+                      className={inputClass}
+                    />
+                    {err?.jumlahTelur && (
+                      <p className="mt-1 pl-2 text-xs text-red-600">
+                        {err.jumlahTelur}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="number"
+                      inputMode="decimal"
+                      step="0.1"
+                      min="0"
+                      placeholder="Kg"
+                      aria-label={`Berat grade ${b.tipeTelur} dalam Kg`}
+                      value={b.beratPanenKg}
+                      onChange={(e) =>
+                        ubahBaris(b.tipeTelur, "beratPanenKg", e.target.value)
+                      }
+                      className={inputClass}
+                    />
+                    {err?.beratPanenKg && (
+                      <p className="mt-1 pl-2 text-xs text-red-600">
+                        {err.beratPanenKg}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="rounded-2xl bg-[#ACC695]/30 px-3 py-2 text-xs text-[#3E7642]">
+        <span className="font-semibold">Total: </span>
+        {formatAngka(totalButir)} butir · {formatAngka(totalBerat, 1)} Kg
+      </div>
+
+      {errors.umum && <p className="pl-2 text-xs text-red-600">{errors.umum}</p>}
 
       <div className="space-y-2 pt-2">
         <button

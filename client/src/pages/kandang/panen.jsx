@@ -1,33 +1,29 @@
 import { useState } from "react";
 import PanenForm from "../../components/panen_form";
 import PanenTable from "../../components/panen_table";
-
-// Data dummy, nanti diganti data dari API
-const INITIAL_DATA = [
-  { id: "PNN-001", tanggal: "2026-10-23", jumlahTelur: 2950, beratPanen: 245.5, kandang: "Kandang A" },
-  { id: "PNN-002", tanggal: "2026-10-24", jumlahTelur: 3000, beratPanen: 250, kandang: "Kandang B" },
-  { id: "PNN-003", tanggal: "2026-10-25", jumlahTelur: 3100, beratPanen: 258.2, kandang: "Kandang A" },
-];
+import {
+  PANEN_AWAL,
+  buatPanen,
+  formatIdPanen,
+  idPanenBerikutnya,
+} from "../../utils/panen";
 
 export default function Panen() {
-  const [data, setData] = useState(INITIAL_DATA);
+  // Data dummy, nanti diganti data dari API
+  const [data, setData] = useState(PANEN_AWAL);
   const [editing, setEditing] = useState(null);
   const [mobileView, setMobileView] = useState("form"); // "form" | "data"
 
-  const handleSave = (values) => {
+  const handleSave = (input) => {
     if (editing) {
+      const diperbarui = buatPanen(input, editing.idPanen);
       setData((prev) =>
-        prev.map((d) => (d.id === editing.id ? { ...d, ...values } : d))
+        prev.map((p) => (p.idPanen === editing.idPanen ? diperbarui : p))
       );
       setEditing(null);
       setMobileView("data");
     } else {
-      setData((prev) => {
-        const next =
-          Math.max(0, ...prev.map((d) => Number(d.id.split("-")[1]))) + 1;
-        const id = `PNN-${String(next).padStart(3, "0")}`;
-        return [...prev, { id, ...values }];
-      });
+      setData((prev) => [...prev, buatPanen(input, idPanenBerikutnya(prev))]);
     }
   };
 
@@ -37,16 +33,24 @@ export default function Panen() {
   };
 
   const handleDelete = (row) => {
-    if (!window.confirm(`Hapus data panen ${row.id}?`)) return;
-    setData((prev) => prev.filter((d) => d.id !== row.id));
-    if (editing?.id === row.id) setEditing(null);
+    const id = formatIdPanen(row.idPanen);
+    if (
+      !window.confirm(
+        `Hapus data panen ${id}? Semua rincian grade-nya ikut terhapus.`
+      )
+    )
+      return;
+    setData((prev) => prev.filter((p) => p.idPanen !== row.idPanen));
+    if (editing?.idPanen === row.idPanen) setEditing(null);
   };
 
   return (
-    <div className="grid gap-6 md:grid-cols-[minmax(220px,280px)_1fr] md:items-start">
+    <div className="grid gap-6 md:grid-cols-[minmax(280px,340px)_1fr] md:items-start">
       {/* Form: di mobile tampil saat mobileView = "form" */}
       <div className={`${mobileView === "form" ? "block" : "hidden"} md:block`}>
         <PanenForm
+          // key berubah saat masuk/keluar mode edit, supaya form dibuat ulang
+          key={editing ? editing.idPanen : "baru"}
           editing={editing}
           onSave={handleSave}
           onCancelEdit={() => setEditing(null)}
